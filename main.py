@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Path
 
 app = FastAPI()
 
@@ -38,5 +38,5 @@ products = {
 
 
 @app.get("/get-item/{item_id}")
-async def get_item(item_id: int):
+async def get_item(item_id: int = Path(description="The ID you want to see")):
     return products[item_id]
