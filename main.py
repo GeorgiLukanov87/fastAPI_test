@@ -11,6 +11,12 @@ class Item(BaseModel):
     brand: Optional[str] = None
 
 
+class UpdateItem(BaseModel):
+    name: Optional[str] = None
+    price: Optional[float] = None
+    brand: Optional[str] = None
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -53,10 +59,10 @@ def get_item(item_id: int = Path(description="The ID you want to see.", gt=0, lt
 
 
 @app.get("/get-by-name")
-def get_item_by_name(*, name: Optional[str] = None):
-    for item_id in products:
-        if products[item_id]["name"] == name:
-            return products[item_id]
+async def get_item_by_name(*, name: Optional[str] = None):
+    for item_id in inventory:
+        if inventory[item_id].name == name:
+            return inventory[item_id]
 
     return {"Data": "Not found!"}
 
@@ -66,9 +72,27 @@ def get_item_by_name(*, name: Optional[str] = None):
 
 
 @app.post("/create-item/{item_id}")
-def create_item(item_id: int, item: Item):
+async def update_item(item_id: int, item: Item):
     if item_id in inventory:
         return {"Error": "Item ID already exist!"}
 
     inventory[item_id] = item
+    return inventory[item_id]
+
+
+@app.put("/update-item/{item_id}")
+async def update_item(item_id: int, item: UpdateItem):
+    if item_id not in inventory:
+        return {"Error": "Item ID does not exist!"}
+
+    if item.name is not None:
+        inventory[item_id] = item.name
+
+    if item.price is not None:
+        inventory[item_id] = item.price
+
+    if item.brand is not None:
+        inventory[item_id] = item.brand
+
+    inventory[item_id].update(item)
     return inventory[item_id]
