@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path, Query
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -55,6 +55,8 @@ inventory = {}
 
 @app.get("/get-item/{item_id}")
 def get_item(item_id: int = Path(description="The ID you want to see.", gt=0, lt=4)):
+    if item_id not in inventory:
+        return {"Error": "ID not found!"}
     return inventory[item_id]
 
 
@@ -96,3 +98,12 @@ async def update_item(item_id: int, item: UpdateItem):
 
     inventory[item_id].update(item)
     return inventory[item_id]
+
+
+@app.delete("/delete-item")
+async def delete_item(item_id: int = Query(..., description="ID of the item to delete,gt=0")):
+    if item_id not in inventory:
+        return {"Error": "ID does not exist!"}
+
+    del inventory[item_id]
+    return {"Succes": "Item deleted!"}
