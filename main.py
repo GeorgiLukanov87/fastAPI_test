@@ -107,3 +107,61 @@ async def delete_item(item_id: int = Query(..., description="ID of the item to d
 
     del inventory[item_id]
     return {"Succes": "Item deleted!"}
+
+
+"""
+From chat GPT
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from typing import Dict
+
+# Define a Pydantic model for our data
+class Item(BaseModel):
+    name: str
+    description: str = None
+    price: float
+    tax: float = None
+
+app = FastAPI()
+
+# In-memory database
+database: Dict[int, Item] = {}
+
+# Counter for generating unique IDs
+id_counter = 0
+
+# Create operation
+@app.post("/items/")
+async def create_item(item: Item):
+    global id_counter
+    id_counter += 1
+    database[id_counter] = item
+    return {"id": id_counter, **item.dict()}
+
+# Read operation
+@app.get("/items/{item_id}")
+async def read_item(item_id: int):
+    item = database.get(item_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return item
+
+# Update operation
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    if item_id not in database:
+        raise HTTPException(status_code=404, detail="Item not found")
+    database[item_id] = item
+    return {"id": item_id, **item.dict()}
+
+# Delete operation
+@app.delete("/items/{item_id}")
+async def delete_item(item_id: int):
+    if item_id not in database:
+        raise HTTPException(status_code=404, detail="Item not found")
+    del database[item_id]
+    return {"message": "Item deleted"}
+
+
+"""
