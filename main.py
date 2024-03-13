@@ -14,19 +14,29 @@ async def say_hello(name: str):
 
 
 products = {
-    1: {
-        "name": "Milk",
-        "price": 2.39,
-        "brand": "Nestle"
-    },
-    2: {
-        "name": "Fanta",
-        "price": 1.39,
-        "brand": "Coca-Cola"
-    },
-    3: {
-        "name": "Eggs",
-        "price": 4.39,
-        "brand": "Home"
-    },
+    1:
+        {
+            "name": "Milk",
+            "price": 2.39,
+            "brand": "Nestle"
+        },
+
+    2:
+        {
+            "name": "Fanta",
+            "price": 1.39,
+            "brand": "Coca-Cola"
+        },
+
+    3:
+        {
+            "name": "Eggs",
+            "price": 4.39,
+            "brand": "Home"
+        },
 }
+
+
+@app.get("/get-item/{item_id}")
+async def get_item(item_id: int):
+    return products[item_id]
