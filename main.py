@@ -40,3 +40,14 @@ products = {
 @app.get("/get-item/{item_id}")
 async def get_item(item_id: int = Path(description="The ID you want to see.", gt=0, lt=4)):
     return products[item_id]
+
+
+@app.get("/get-by-name")
+def get_item_by_name(name: str = None):
+    for item_id in products:
+        if products[item_id]["name"] == name:
+            return products[item_id]
+
+    return {"Data": "Not found!"}
+
+# http://127.0.0.1:8000/get-by-name?name=Milk
