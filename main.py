@@ -38,5 +38,5 @@ products = {
 
 
 @app.get("/get-item/{item_id}")
-async def get_item(item_id: int = Path(description="The ID you want to see")):
+async def get_item(item_id: int = Path(description="The ID you want to see.", gt=0, lt=4)):
     return products[item_id]
