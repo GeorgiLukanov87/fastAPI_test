@@ -32,21 +32,21 @@ products = {
         {
             "name": "Milk",
             "price": 2.39,
-            "brand": "Nestle",
+            "brand": "Nestle"
         },
 
     2:
         {
             "name": "Bread",
             "price": 1.39,
-            "brand": "HomeMade",
+            "brand": "HomeMade"
         },
 
     3:
         {
             "name": "Eggs",
             "price": 4.39,
-            "brand": "Home",
+            "brand": "Home"
         },
 }
 
@@ -68,10 +68,8 @@ async def get_item_by_name(*, name: Optional[str] = None):
 
     return {"Data": "Not found!"}
 
-
 # http://127.0.0.1:8000/get-by-name?name=Milk = {"name":"Milk","price":2.39,"brand":"Nestle"}
 # http://127.0.0.1:8000/get-by-name?name=Eggs = {"name":"Eggs","price":4.39,"brand":"Home"}
-
 
 @app.post("/create-item/{item_id}")
 async def update_item(item_id: int, item: Item):
@@ -162,6 +160,4 @@ async def delete_item(item_id: int):
         raise HTTPException(status_code=404, detail="Item not found")
     del database[item_id]
     return {"message": "Item deleted"}
-
-
 """
