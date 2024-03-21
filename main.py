@@ -34,14 +34,12 @@ products = {
             "price": 2.39,
             "brand": "Nestle"
         },
-
     2:
         {
             "name": "Bread",
             "price": 1.39,
             "brand": "HomeMade"
         },
-
     3:
         {
             "name": "Eggs",
@@ -69,8 +67,6 @@ async def get_item_by_name(*, name: Optional[str] = None):
     return {"Data": "Not found!"}
 
 # http://127.0.0.1:8000/get-by-name?name=Milk = {"name":"Milk","price":2.39,"brand":"Nestle"}
-# http://127.0.0.1:8000/get-by-name?name=Eggs = {"name":"Eggs","price":4.39,"brand":"Home"}
-
 @app.post("/create-item/{item_id}")
 async def update_item(item_id: int, item: Item):
     if item_id in inventory:
