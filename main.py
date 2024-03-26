@@ -5,10 +5,12 @@ from pydantic import BaseModel
 app = FastAPI()
 
 
+
 class Item(BaseModel):
     name: str
     price: float
     brand: Optional[str] = None
+
 
 
 class UpdateItem(BaseModel):
@@ -17,9 +19,11 @@ class UpdateItem(BaseModel):
     brand: Optional[str] = None
 
 
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
 
 
 @app.get("/hello/{name}")
